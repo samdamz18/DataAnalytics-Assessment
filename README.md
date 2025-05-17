@@ -52,8 +52,23 @@ Find active savings or investment accounts with **no inflow in the last 365 days
 - To make the report more fine-tuned, i removed deleted and archived records.
 - I included those that have not had any transaction at all, since this fits the scenerio painted by the ops team. This is done by falling back to `created_on`
 
+### Assessment_Q4.sql  - Customer Lifetime Value (CLV) Estimation
+**Objective**
+Estimate CLV for each customer based on transaction volume and tenure.  
 
+**Approach**:
+- Aggregate total transactions and total inflow value (in Naira) per customer
+- Calculate account tenure in months since signup for each customer. Tenure = months since `created_on`.
+- Combine transactions and tenure, and calculate estimated CLV
+- Profit = 0.1% of transaction value.
+- Formula:
+  **CLV = `(total_transactions / tenure) * 12 * avg_profit_per_transaction)`**
 
+**Challenges:**
+
+- All amount fields were in **kobo**, not Naira. Divided by `100.0` for accurate reporting.
+- Handled using `NULLIF(..., 0)` to avoid runtime errors when tenure or transaction count is zero.
+- I restricted the report to only active users, for better reporting.
 
 
 
