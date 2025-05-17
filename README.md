@@ -1,7 +1,7 @@
 # DataAnalytics-Assessment
 Assessment scripts for data analytics
 
-### Assessment_Q1.sql
+### Assessment_Q1.sql  -  Cross-Selling Opportunity: Savings + Investment Plans
 
 **Objective:**  
 Identify customers who have both a funded savings plan and a funded investment plan (cross-selling insight), and rank them by total deposits.
@@ -19,7 +19,7 @@ Identify customers who have both a funded savings plan and a funded investment p
 - Initially considered separate subqueries for savings and investment counts, but opted for `CASE` in aggregate functions for clarity and performance.
 - Ensured data type precision with `ROUND(... / 100.0, 2)` to avoid integer division or rounding errors.
 
-### Assessment_Q2.sql
+### Assessment_Q2.sql  -  Transaction Frequency Analysis
 
 **Objective:**  
 Segment users by how frequently they transact each month, to classify them into High, Medium, or Low frequency.
@@ -35,6 +35,26 @@ Segment users by how frequently they transact each month, to classify them into 
 
 **Challenges:**
 - I assumed this is for inflows only, since the assessment only specified the savings_savingsaccount transaction table and not withdrawals_withdrawal
+
+### Assessment_Q3.sql  -  Account Inactivity Alert
+
+**Objective:** 
+Find active savings or investment accounts with **no inflow in the last 365 days**.
+
+**Approach:**
+- Used inflow transactions (`confirmed_amount > 0`) to determine last activity date.
+- Included accounts with **no inflow ever** by falling back to `created_on`.
+- Excluded archived and deleted plans via `is_archived = 0 AND is_deleted = 0`.
+- Calculated inactivity using `DATEDIFF(CURRENT_DATE, last_transaction_date)`.
+- Filtered for `inactivity_days > 365`.
+
+**Challenges:**
+- To make the report more fine-tuned, i removed deleted and archived records.
+- I included those that have not had any transaction at all, since this fits the scenerio painted by the ops team. This is done by falling back to `created_on`
+
+
+
+
 
 
 
