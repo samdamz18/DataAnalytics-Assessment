@@ -19,4 +19,22 @@ Identify customers who have both a funded savings plan and a funded investment p
 - Initially considered separate subqueries for savings and investment counts, but opted for `CASE` in aggregate functions for clarity and performance.
 - Ensured data type precision with `ROUND(... / 100.0, 2)` to avoid integer division or rounding errors.
 
+### Assessment_Q2.sql
+
+**Objective:**  
+Segment users by how frequently they transact each month, to classify them into High, Medium, or Low frequency.
+
+**Approach:**
+- Used `savings_savingsaccount.transaction_date` to group transactions by customer and month.
+- Calculated the average number of monthly transactions per customer.
+- Categorized users:
+  - High Frequency: ≥ 10 transactions/month
+  - Medium Frequency: 3–9 transactions/month
+  - Low Frequency: ≤ 2 transactions/month
+- Used `DATE_FORMAT(..., '%Y-%m-01')` to default all transaction for an owner_id in a month to the first day for month grouping.
+
+**Challenges:**
+- I assumed this is for inflows only, since the assessment only specified the savings_savingsaccount transaction table and not withdrawals_withdrawal
+
+
 
